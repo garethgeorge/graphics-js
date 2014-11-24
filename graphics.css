@@ -5,7 +5,10 @@
 	margin: auto;
 	z-index: 0;
 }
-.rect {
+.Rectangle {
 	position: fixed;
-	background-color: red;
+	background-color: #333;
+}
+.Circle {
+	border-radius: 50%;
 }
