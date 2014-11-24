@@ -92,6 +92,50 @@
 		this.draw();
 	};
 
+//object and methods for Text
+	var Text = function(l, f){
+		this.label = l;
+		this.font = f;
+		this.color = '#333';
+		this.x = 0;
+		this.y = 0;
+		this.id = stringGen(5);
+	}
+
+	Text.prototype.draw = function() {
+		$('#canvas').append('<span class="Text" id="' + this.id + '"></span>');
+		$('#' + this.id).css({
+			'margin-left': this.x + 'px',
+			'margin-top': this.y + 'px',
+			'color': this.color,
+			'font': this.font
+		});
+		$('#' + this.id).html(this.label);
+	};
+
+	Text.prototype.setPosition = function(x, y) {
+		this.x = x;
+		this.y = y;
+		this.draw();
+	};
+
+	Text.prototype.setColor = function(color) {
+		this.color = color;
+		this.draw();
+	};
+
+	Text.prototype.setText = function(t) {
+		this.label = t;
+		this.draw();
+	};
+
+	Text.prototype.move = function(dx, dy) {
+		this.x += dx;
+		this.y += dy;
+		this.draw();
+	};
+
+
 function stringGen(len) {
     var text = "";
     var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

@@ -7,8 +7,10 @@
 }
 .Rectangle {
 	position: fixed;
-	background-color: #333;
 }
 .Circle {
 	border-radius: 50%;
+}
+.Text {
+	
 }
