@@ -1,0 +1,11 @@
+#canvas {
+	height: 400px;
+	width: 400px;
+	border: black dotted 1px;
+	margin: auto;
+	z-index: 0;
+}
+.rect {
+	position: fixed;
+	background-color: red;
+}
