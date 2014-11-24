@@ -18,7 +18,7 @@
 		this.height = height;
 		this.x = 0;
 		this.y = 0;
-		this.color = '#333';
+		this.color = '#FFF';
 		this.id = stringGen(5);
 	}
 
@@ -55,7 +55,7 @@
 		this.radius = r;
 		this.x = r;
 		this.y = r;
-		this.color = '#333';
+		this.color = '#FFF';
 		this.id = stringGen(5);
 	}
 
@@ -96,7 +96,7 @@
 	var Text = function(l, f){
 		this.label = l;
 		this.font = f;
-		this.color = '#333';
+		this.color = '#FFF';
 		this.x = 0;
 		this.y = 0;
 		this.id = stringGen(5);
