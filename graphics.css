@@ -1,9 +1,10 @@
 #canvas {
 	height: 400px;
 	width: 400px;
-	border: black dotted 1px;
-	margin: auto;
-	z-index: 0;
+	border: white dotted 1px;
+	position: fixed;
+	right: 10px;
+	z-index: 10;
 }
 .Rectangle {
 	position: fixed;
@@ -12,5 +13,4 @@
 	border-radius: 50%;
 }
 .Text {
-	
 }
