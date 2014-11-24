@@ -2,15 +2,12 @@
 	$(document).ready(function(){
 		window.onload = canvas();
 		function canvas(){
-			$('body').append('<div id="canvas"></div>');
+			$('body').append("<canvas id='we'>Didn't work</canvas>");
 		}
 	});
-	function getWidth(){
-		return $('#canvas').css('width');
-	}
-	function getHeight(){
-		return $('#canvas').css('height');
-	}
+	var canvas = document.getElementsByTagName("canvas");
+	function getWidth(){return canvas.css('width');};
+	function getHeight(){return canvas.css('height');};
 
 //object and methods for Rectangle
 	var Rectangle = function(width, height) {
@@ -23,15 +20,10 @@
 	}
 
 	Rectangle.prototype.draw = function() {
-		$('#canvas').append('<div class="Rectangle" id="' + this.id + '"></div>');
-		$('#' + this.id).css({
-			'width': this.width + 'px',
-			'height': this.height + 'px',
-			'margin-left': this.x + 'px',
-			'margin-top': this.y + 'px',
-			'background-color': this.color
-		});
-	}
+		var r = canvas.getContext('2d');
+		r.fillStyle = this.color;
+		r.fillRect(this.x, this.y, this.width, this.height);
+	};
 
 	Rectangle.prototype.setPosition = function(x, y) {
 		this.x = x;
@@ -60,14 +52,11 @@
 	}
 
 	Circle.prototype.draw = function() {
-		$('#canvas').append('<div class="Circle" id="' + this.id + '"></div>');
-		$('#' + this.id).css({
-			'width': this.radius * 2 + 'px',
-			'height': this.radius * 2 + 'px',
-			'margin-left': (this.x - this.radius) + 'px',
-			'margin-top': (this.y - this.radius) + 'px',
-			'background-color': this.color
-		});
+		var c = canvas.getContext('2d');
+		c.beginPath();
+		c.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
+		c.fillStyle = this.color;
+		c.fill();
 	};
 
 	Circle.prototype.setPosition = function(x, y) {
@@ -103,14 +92,9 @@
 	}
 
 	Text.prototype.draw = function() {
-		$('#canvas').append('<span class="Text" id="' + this.id + '"></span>');
-		$('#' + this.id).css({
-			'margin-left': this.x + 'px',
-			'margin-top': this.y + 'px',
-			'color': this.color,
-			'font': this.font
-		});
-		$('#' + this.id).html(this.label);
+		var t = canvas.getContext('2d');
+		t.fillText(this.l, this.x, this.y);
+		t.font = this.font;
 	};
 
 	Text.prototype.setPosition = function(x, y) {
@@ -132,6 +116,48 @@
 	Text.prototype.move = function(dx, dy) {
 		this.x += dx;
 		this.y += dy;
+		this.draw();
+	};
+
+//object and methods for Line
+	var Line = function(startX, startY, endX, endY) {
+		this.startX = startX;
+		this.startY = startY;
+		this.endX = endX;
+		this.endY = endY;
+		this.color = '#FFF';
+	}
+
+	Line.prototype.draw = function() {
+		var l = canvas.getContext("2d");
+		l.moveTo(this.startX, this.startY);
+		l.lineTo(this.endX, this.endY);
+		l.strokeStyle = this.color;
+		l.stroke();
+	};
+
+	Line.prototype.setColor = function(color) {
+		this.color = color;
+		this.draw();
+	};
+
+	Line.prototype.move = function(dx, dy) {
+		this.startX += dx;
+		this.endX += dx;
+		this.startY += dy;
+		this.endY += dy;
+		this.draw();
+	};
+
+	Line.prototype.setPosition = function(x, y) {
+		this.startX = x;
+		this.startY = y;
+		this.draw();
+	};
+
+	Line.prototype.setPosition = function(x, y) {
+		this.endX = x;
+		this.endY = y;
 		this.draw();
 	};
 
