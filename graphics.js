@@ -1,13 +1,15 @@
 //loads a canvas for drawing on
+	var canvas;
 	$(document).ready(function(){
-		window.onload = canvas();
-		function canvas(){
+		window.onload = start();
+		function start(){
 			$('body').append("<canvas id='we'>Didn't work</canvas>");
+			canvas = document.getElementById('we');
 		}
 	});
-	var canvas = document.getElementsByTagName("canvas");
-	function getWidth(){return canvas.css('width');};
-	function getHeight(){return canvas.css('height');};
+
+	var getWidth = function(){return canvas.css('width');};
+	var getHeight = function(){return canvas.css('height');};
 
 //object and methods for Rectangle
 	var Rectangle = function(width, height) {
@@ -20,9 +22,7 @@
 	}
 
 	Rectangle.prototype.draw = function() {
-		var r = canvas.getContext('2d');
-		r.fillStyle = this.color;
-		r.fillRect(this.x, this.y, this.width, this.height);
+		canvasObjects.push(this);
 	};
 
 	Rectangle.prototype.setPosition = function(x, y) {
@@ -52,11 +52,7 @@
 	}
 
 	Circle.prototype.draw = function() {
-		var c = canvas.getContext('2d');
-		c.beginPath();
-		c.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
-		c.fillStyle = this.color;
-		c.fill();
+		canvasObjects.push(this);
 	};
 
 	Circle.prototype.setPosition = function(x, y) {
@@ -92,9 +88,10 @@
 	}
 
 	Text.prototype.draw = function() {
-		var t = canvas.getContext('2d');
-		t.fillText(this.l, this.x, this.y);
-		t.font = this.font;
+		//var t = canvas.getContext('2d');
+		//t.fillText(this.l, this.x, this.y);
+		//t.font = this.font;
+		canvasObjects.push(this);
 	};
 
 	Text.prototype.setPosition = function(x, y) {
@@ -126,14 +123,16 @@
 		this.endX = endX;
 		this.endY = endY;
 		this.color = '#FFF';
+		this.id = stringGen(5);
 	}
 
 	Line.prototype.draw = function() {
-		var l = canvas.getContext("2d");
-		l.moveTo(this.startX, this.startY);
-		l.lineTo(this.endX, this.endY);
-		l.strokeStyle = this.color;
-		l.stroke();
+		//var l = canvas.getContext("2d");
+		//l.moveTo(this.startX, this.startY);
+		//l.lineTo(this.endX, this.endY);
+		//l.strokeStyle = this.color;
+		//l.stroke();
+		canvasObjects.push(this);
 	};
 
 	Line.prototype.setColor = function(color) {
@@ -155,12 +154,42 @@
 		this.draw();
 	};
 
-	Line.prototype.setPosition = function(x, y) {
+	Line.prototype.setEndpoint = function(x, y) {
 		this.endX = x;
 		this.endY = y;
 		this.draw();
 	};
 
+//array of objects for the canvas to draw
+	var canvasObjects = [];
+	canvasObjects.push = function (){
+		canvas.clearRect(0, 0, getWidth(), getHeight());
+		for (var i = 0; i < arguments.length; i++) {
+			var obj = arguments[i];
+			if (obj.getType() === 'Rectangle'){
+				var r = canvas.getContext('2d');
+				r.fillStyle = obj.color;
+				r.fillRect(obj.x, obj.y, obj.width, obj.height);
+			} else if (obj.getType() === 'Circle'){
+				var c = canvas.getContext('2d');
+				c.beginPath();
+				c.arc(obj.x, obj.y, obj.radius, 0, 2*Math.PI);
+				c.fillStyle = obj.color;
+				c.fill();
+			} else if (obj.getType() === 'Text'){
+				var t = canvas.getContext('2d');
+				t.fillText(obj.l, obj.x, obj.y);
+				t.font = obj.font;
+			} else if (obj.getType() === 'Line'){
+				var l = canvas.getContext("2d");
+				l.moveTo(obj.startX, obj.startY);
+				l.lineTo(obj.endX, obj.endY);
+				l.strokeStyle = obj.color;
+				l.stroke();
+			}
+		};
+	    return Array.prototype.push.apply(this,arguments);
+	}
 
 function stringGen(len) {
     var text = "";
@@ -168,3 +197,9 @@ function stringGen(len) {
     for( var i=0; i < len; i++ ) text += charset.charAt(Math.floor(Math.random() * charset.length));
     return text;
 }
+
+Object.prototype.getName = function() { 
+   var funcNameRegex = /function (.{1,})\(/;
+   var results = (funcNameRegex).exec((this).constructor.toString());
+   return (results && results.length > 1) ? results[1] : "";
+};
