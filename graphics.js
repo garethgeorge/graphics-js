@@ -1,9 +1,8 @@
 //loads a canvas for drawing on
 	var canvas;
 	$(document).ready(function(){
-		window.onload = start();
-		function start(){
-			$('body').append("<canvas id='we'>Didn't work</canvas>");
+		window.onload = function(){
+			$('body').append("<canvas id='we'>Didn't work. Go get Chrome.</canvas>");
 			canvas = document.getElementById('we');
 		}
 	});
