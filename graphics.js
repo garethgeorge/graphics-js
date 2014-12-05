@@ -7,8 +7,8 @@
 		}
 	});
 
-	var getWidth = function(){return canvas.css('width');};
-	var getHeight = function(){return canvas.css('height');};
+	var getWidth = function(){return $(canvas).css('width');};
+	var getHeight = function(){return $(canvas).css('height');};
 
 //object and methods for Rectangle
 	var Rectangle = function(width, height) {
@@ -162,7 +162,8 @@
 //array of objects for the canvas to draw
 	var canvasObjects = [];
 	canvasObjects.push = function (){
-		canvas.clearRect(0, 0, getWidth(), getHeight());
+		var j = canvas.getContext('2d');
+		j.clearRect(0, 0, getWidth(), getHeight());
 		for (var i = 0; i < arguments.length; i++) {
 			var obj = arguments[i];
 			if (obj.getType() === 'Rectangle'){
@@ -197,7 +198,7 @@ function stringGen(len) {
     return text;
 }
 
-Object.prototype.getName = function() { 
+Object.prototype.getType = function() { 
    var funcNameRegex = /function (.{1,})\(/;
    var results = (funcNameRegex).exec((this).constructor.toString());
    return (results && results.length > 1) ? results[1] : "";
